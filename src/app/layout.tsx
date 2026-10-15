@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import "./globals.css";
 import GoogleLoginToast from "@/components/auth/GoogleLoginToast";
-import PublicFooter from "@/components/layout/public-footer";
 import PublicNavbar from "@/components/layout/public-navbar";
 import QueryProvider from "@/providers/QueryProvider";
 import { Suspense } from "react";
+import ConditionalPublicFooter from "@/components/layout/ConditionalPublicFooter";
 
 export const metadata: Metadata = {
   title: "Courier Logistics",
@@ -32,7 +32,7 @@ export default function RootLayout({
             closeButton
             duration={3000}
           />
-          <PublicFooter />
+          <ConditionalPublicFooter />
         </QueryProvider>
       </body>
     </html>

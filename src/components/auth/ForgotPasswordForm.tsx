@@ -61,7 +61,6 @@ export default function ForgotPasswordForm() {
       <div className="space-y-2">
         {" "}
         <Label htmlFor="email">Email address</Label>
-        ```
         <Input
           id="email"
           type="email"
@@ -79,7 +78,7 @@ export default function ForgotPasswordForm() {
       </div>
       <Button
         type="submit"
-        className="h-11 w-full rounded-xl"
+        className="h-11 w-full rounded-xl cursor-pointer"
         disabled={isLoading}
       >
         {isLoading ? "Sending code..." : "Send reset code"}

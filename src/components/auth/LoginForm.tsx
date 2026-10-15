@@ -122,7 +122,7 @@ export default function LoginForm() {
                 key={account.role}
                 type="button"
                 onClick={() => fillDemoAccount(account.email, account.password)}
-                className={`flex items-center gap-3 rounded-xl border p-3 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${account.color}`}
+                className={`flex items-center gap-3 rounded-xl border p-3 text-left transition-all duration-200 hover:-translate-y-0.5 cursor-pointer hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${account.color}`}
               >
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/80">
                   <Icon size={19} />
@@ -212,7 +212,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={isLoggingIn}
-          className="h-11 w-full rounded-lg bg-primary font-medium text-primary-foreground transition-all duration-200 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/25 disabled:cursor-not-allowed disabled:opacity-50"
+          className="h-11 w-full rounded-lg bg-primary font-medium text-primary-foreground transition-all duration-200 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/25 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
         >
           {isLoggingIn ? "Logging in..." : "Login"}
         </button>
@@ -229,7 +229,7 @@ export default function LoginForm() {
       <button
         type="button"
         onClick={handleGoogleLogin}
-        className="flex h-11 w-full items-center justify-center gap-3 rounded-lg border font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        className="flex h-11 w-full items-center justify-center gap-3 rounded-lg border font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer"
       >
         <Image
           src="/google.svg" // নিশ্চিত করুন এই ফাইলটি public/ ফোল্ডারে আছে
@@ -246,7 +246,7 @@ export default function LoginForm() {
         <button
           type="button"
           onClick={() => router.push("/register")}
-          className="font-medium text-primary hover:underline"
+          className="font-medium text-primary hover:underline cursor-pointer"
         >
           Create account
         </button>

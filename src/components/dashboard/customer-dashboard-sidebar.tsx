@@ -197,21 +197,21 @@ export default function CustomerDashboardSidebar() {
               }`}
             />
           </Link>
-        </nav>
-      </div>
 
-      {/* Logout */}
-      <div className="shrink-0 px-4 pb-4 pt-1">
-        <Button
-          type="button"
-          variant="ghost"
-          disabled={loggingOut}
-          onClick={handleLogout}
-          className="w-full justify-start gap-3 rounded-xl px-3 text-red-600 transition-colors duration-200 hover:bg-red-50 hover:text-red-700"
-        >
-          <LogOut size={19} />
-          {loggingOut ? "Logging out..." : "Logout"}
-        </Button>
+          {/* Logout */}
+          <div className="shrink-0 px-4 pb-4 pt-1">
+            <Button
+              type="button"
+              variant="ghost"
+              disabled={loggingOut}
+              onClick={handleLogout}
+              className="w-full justify-start gap-3 rounded-xl px-3 text-red-600 transition-colors duration-200 hover:bg-red-50 hover:text-red-700"
+            >
+              <LogOut size={19} />
+              {loggingOut ? "Logging out..." : "Logout"}
+            </Button>
+          </div>
+        </nav>
       </div>
     </aside>
   );

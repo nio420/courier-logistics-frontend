@@ -164,19 +164,18 @@ export default function CourierDashboardSidebar() {
             </Link>
           );
         })}
-      </nav>
 
-      <div className="shrink-0 border-t border-slate-200 p-3">
+        {/* Logout now appears directly below the navigation items */}
         <button
           type="button"
           onClick={handleLogout}
           disabled={loggingOut}
-          className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-red-600 transition-colors duration-200 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-red-600 transition-colors duration-200 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
         >
           <LogOut size={19} className="shrink-0" />
           <span>{loggingOut ? "Logging out..." : "Logout"}</span>
         </button>
-      </div>
+      </nav>
     </div>
   );
 

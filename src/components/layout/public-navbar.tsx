@@ -18,7 +18,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/hooks/auth/useAuth";
-
 import { getCurrentUser } from "@/lib/api/auth";
 
 const navItems = [
@@ -124,7 +123,6 @@ export default function PublicNavbar() {
   const isAuthenticated = Boolean(user) && !loggingOut;
   const currentUser = isAuthenticated ? user : undefined;
 
-  // FIX: The API returns the image URL in currentUser.profileImage.
   const avatarUrl = getUserAvatar(currentUser);
 
   const dashboardPath =
@@ -429,11 +427,11 @@ export default function PublicNavbar() {
         </button>
       </nav>
 
-      {/* Mobile navigation drawer */}
+      {/* Mobile drawer: clipped so the closed panel cannot cause horizontal overflow */}
       <div
         id="mobile-navigation"
         aria-hidden={!menuOpen}
-        className={`fixed inset-0 z-[60] xl:hidden ${
+        className={`fixed inset-0 z-[60] overflow-hidden xl:hidden ${
           menuOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
       >
@@ -451,7 +449,7 @@ export default function PublicNavbar() {
         {/* Drawer */}
         <aside
           aria-label="Mobile navigation drawer"
-          className={`absolute inset-y-0 right-0 flex h-dvh max-h-dvh min-h-0 w-[min(340px,88vw)] flex-col overflow-hidden border-l border-slate-200 bg-white shadow-2xl transition-transform duration-300 ease-in-out motion-reduce:transition-none ${
+          className={`absolute inset-y-0 right-0 flex h-dvh max-h-dvh min-h-0 w-[min(340px,88vw)] max-w-full flex-col overflow-hidden border-l border-slate-200 bg-white shadow-2xl transition-transform duration-300 ease-in-out motion-reduce:transition-none ${
             menuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
@@ -469,8 +467,9 @@ export default function PublicNavbar() {
             </button>
           </div>
 
-          {/* Scrollable drawer content */}
+          {/* Drawer content */}
           <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-4 pb-5 pt-5">
+            {/* Public navigation stays at the top */}
             <nav
               aria-label="Mobile main navigation"
               className="flex shrink-0 flex-col gap-1.5"
@@ -500,37 +499,14 @@ export default function PublicNavbar() {
               })}
             </nav>
 
-            {isAuthenticated && (
-              <>
-                <div className="my-4 shrink-0 border-t border-slate-200" />
-
-                {/* Mobile account summary */}
-                <div className="mb-3 flex min-w-0 items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
-                  <ProfileAvatar
-                    avatarUrl={avatarUrl}
-                    avatarFailed={avatarFailed}
-                    onAvatarError={() => setAvatarFailed(true)}
-                    name={currentUser?.name}
-                    size="large"
-                  />
-
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-bold text-slate-900">
-                      {currentUser?.name || "My Account"}
-                    </p>
-                    <p className="mt-1 truncate text-xs text-slate-500">
-                      {currentUser?.email}
-                    </p>
-                    <span className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-blue-700">
-                      <ShieldCheck size={12} />
-                      {currentUser?.role || "Customer"}
-                    </span>
-                  </div>
-                </div>
+            {/* Account section stays at the bottom */}
+            {isAuthenticated ? (
+              <div className="mt-auto shrink-0 pt-5">
+                <div className="mb-3 border-t border-slate-200" />
 
                 <nav
                   aria-label="Mobile account navigation"
-                  className="flex shrink-0 flex-col gap-1.5"
+                  className="flex flex-col gap-1.5"
                 >
                   <Link
                     href={dashboardPath}
@@ -593,8 +569,7 @@ export default function PublicNavbar() {
                   </Link>
                 </nav>
 
-                {/* Logout stays after account links */}
-                <div className="mt-4 shrink-0 border-t border-slate-100 pt-4">
+                <div className="mt-3 border-t border-slate-100 pt-3">
                   <button
                     type="button"
                     onClick={handleLogout}
@@ -605,11 +580,9 @@ export default function PublicNavbar() {
                     {loggingOut ? "Logging out..." : "Log Out"}
                   </button>
                 </div>
-              </>
-            )}
-
-            {!isAuthenticated && (
-              <div className="mt-5 grid shrink-0 grid-cols-2 gap-3 border-t border-slate-100 pt-5">
+              </div>
+            ) : (
+              <div className="mt-auto grid shrink-0 grid-cols-2 gap-3 border-t border-slate-100 pt-5">
                 <Link
                   href="/login"
                   onClick={closeMenus}

@@ -1,14 +1,20 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense } from "react";
-import { useForm } from "react-hook-form";
+import { Suspense, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/auth/useAuth";
@@ -37,8 +43,12 @@ function ResetPasswordFormContent() {
 
   const emailFromUrl = searchParams.get("email") ?? "";
 
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<ResetPasswordFormData>({
@@ -76,15 +86,17 @@ function ResetPasswordFormContent() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
       <div className="space-y-2">
         <Label htmlFor="email">Email address</Label>
+
         <Input
           id="email"
           type="email"
           autoComplete="email"
           placeholder="you@example.com"
           aria-invalid={Boolean(errors.email)}
-          disabled={isResettingPassword}
+          readOnly
           {...register("email")}
         />
+
         {errors.email && (
           <p className="text-xs text-destructive" role="alert">
             {errors.email.message}
@@ -94,17 +106,53 @@ function ResetPasswordFormContent() {
 
       <div className="space-y-2">
         <Label htmlFor="otp">Reset code</Label>
-        <Input
-          id="otp"
-          type="text"
-          inputMode="numeric"
-          autoComplete="one-time-code"
-          maxLength={6}
-          placeholder="Enter your 6-digit code"
-          aria-invalid={Boolean(errors.otp)}
-          disabled={isResettingPassword}
-          {...register("otp")}
+
+        <Controller
+          name="otp"
+          control={control}
+          render={({ field }) => (
+            <InputOTP
+              id="otp"
+              maxLength={6}
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              disabled={isResettingPassword}
+              aria-invalid={Boolean(errors.otp)}
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              pattern="^[0-9]*$"
+            >
+              <InputOTPGroup className="gap-2.5">
+                <InputOTPSlot
+                  index={0}
+                  className="h-12 w-11 rounded-lg border border-input bg-muted/60 text-base font-semibold shadow-sm first:rounded-lg"
+                />
+                <InputOTPSlot
+                  index={1}
+                  className="h-12 w-11 rounded-lg border border-input bg-muted/60 text-base font-semibold shadow-sm"
+                />
+                <InputOTPSlot
+                  index={2}
+                  className="h-12 w-11 rounded-lg border border-input bg-muted/60 text-base font-semibold shadow-sm"
+                />
+                <InputOTPSlot
+                  index={3}
+                  className="h-12 w-11 rounded-lg border border-input bg-muted/60 text-base font-semibold shadow-sm"
+                />
+                <InputOTPSlot
+                  index={4}
+                  className="h-12 w-11 rounded-lg border border-input bg-muted/60 text-base font-semibold shadow-sm"
+                />
+                <InputOTPSlot
+                  index={5}
+                  className="h-12 w-11 rounded-lg border border-input bg-muted/60 text-base font-semibold shadow-sm last:rounded-lg"
+                />
+              </InputOTPGroup>
+            </InputOTP>
+          )}
         />
+
         {errors.otp && (
           <p className="text-xs text-destructive" role="alert">
             {errors.otp.message}
@@ -114,15 +162,37 @@ function ResetPasswordFormContent() {
 
       <div className="space-y-2">
         <Label htmlFor="newPassword">New password</Label>
-        <Input
-          id="newPassword"
-          type="password"
-          autoComplete="new-password"
-          placeholder="Create a new password"
-          aria-invalid={Boolean(errors.newPassword)}
-          disabled={isResettingPassword}
-          {...register("newPassword")}
-        />
+
+        <div className="relative">
+          <Input
+            id="newPassword"
+            type={showNewPassword ? "text" : "password"}
+            autoComplete="new-password"
+            placeholder="Create a new password"
+            aria-invalid={Boolean(errors.newPassword)}
+            disabled={isResettingPassword}
+            className="pr-10"
+            {...register("newPassword")}
+          />
+
+          <button
+            type="button"
+            onClick={() => setShowNewPassword((previous) => !previous)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+            aria-label={
+              showNewPassword ? "Hide new password" : "Show new password"
+            }
+            aria-pressed={showNewPassword}
+            disabled={isResettingPassword}
+          >
+            {showNewPassword ? (
+              <EyeOff className="size-4" />
+            ) : (
+              <Eye className="size-4" />
+            )}
+          </button>
+        </div>
+
         {errors.newPassword && (
           <p className="text-xs text-destructive" role="alert">
             {errors.newPassword.message}
@@ -132,15 +202,39 @@ function ResetPasswordFormContent() {
 
       <div className="space-y-2">
         <Label htmlFor="confirmPassword">Confirm new password</Label>
-        <Input
-          id="confirmPassword"
-          type="password"
-          autoComplete="new-password"
-          placeholder="Confirm your new password"
-          aria-invalid={Boolean(errors.confirmPassword)}
-          disabled={isResettingPassword}
-          {...register("confirmPassword")}
-        />
+
+        <div className="relative">
+          <Input
+            id="confirmPassword"
+            type={showConfirmPassword ? "text" : "password"}
+            autoComplete="new-password"
+            placeholder="Confirm your new password"
+            aria-invalid={Boolean(errors.confirmPassword)}
+            disabled={isResettingPassword}
+            className="pr-10"
+            {...register("confirmPassword")}
+          />
+
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword((previous) => !previous)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+            aria-label={
+              showConfirmPassword
+                ? "Hide confirm password"
+                : "Show confirm password"
+            }
+            aria-pressed={showConfirmPassword}
+            disabled={isResettingPassword}
+          >
+            {showConfirmPassword ? (
+              <EyeOff className="size-4" />
+            ) : (
+              <Eye className="size-4" />
+            )}
+          </button>
+        </div>
+
         {errors.confirmPassword && (
           <p className="text-xs text-destructive" role="alert">
             {errors.confirmPassword.message}

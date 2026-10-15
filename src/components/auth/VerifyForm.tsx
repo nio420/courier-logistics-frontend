@@ -165,13 +165,31 @@ export default function VerifyOtpForm() {
                 aria-label="6-digit verification code"
                 containerClassName="justify-center"
               >
-                <InputOTPGroup>
-                  <InputOTPSlot index={0} />
-                  <InputOTPSlot index={1} />
-                  <InputOTPSlot index={2} />
-                  <InputOTPSlot index={3} />
-                  <InputOTPSlot index={4} />
-                  <InputOTPSlot index={5} />
+                <InputOTPGroup className="gap-2.5">
+                  <InputOTPSlot
+                    index={0}
+                    className="h-12 w-11 rounded-lg border border-input bg-muted/60 text-base font-semibold shadow-sm first:rounded-lg"
+                  />
+                  <InputOTPSlot
+                    index={1}
+                    className="h-12 w-11 rounded-lg border border-input bg-muted/60 text-base font-semibold shadow-sm"
+                  />
+                  <InputOTPSlot
+                    index={2}
+                    className="h-12 w-11 rounded-lg border border-input bg-muted/60 text-base font-semibold shadow-sm"
+                  />
+                  <InputOTPSlot
+                    index={3}
+                    className="h-12 w-11 rounded-lg border border-input bg-muted/60 text-base font-semibold shadow-sm"
+                  />
+                  <InputOTPSlot
+                    index={4}
+                    className="h-12 w-11 rounded-lg border border-input bg-muted/60 text-base font-semibold shadow-sm"
+                  />
+                  <InputOTPSlot
+                    index={5}
+                    className="h-12 w-11 rounded-lg border border-input bg-muted/60 text-base font-semibold shadow-sm last:rounded-lg"
+                  />
                 </InputOTPGroup>
               </InputOTP>
             )}
@@ -186,7 +204,7 @@ export default function VerifyOtpForm() {
 
         <Button
           type="submit"
-          className="h-11 w-full"
+          className="h-11 w-full cursor-pointer rounded-lg bg-primary text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={
             isVerifyingEmail || !email || form.watch("otp").length !== 6
           }
@@ -203,7 +221,7 @@ export default function VerifyOtpForm() {
         <Button
           type="button"
           variant="ghost"
-          className="gap-2"
+          className="gap-2 cursor-pointer"
           onClick={handleResend}
           disabled={
             secondsLeft > 0 || isVerifyingEmail || isResendingOtp || !email
