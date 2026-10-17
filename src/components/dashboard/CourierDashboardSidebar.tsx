@@ -17,6 +17,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { logoutUser } from "@/lib/api/auth";
+import { toast } from "sonner";
 
 const navigation = [
   { label: "Overview", href: "/courier", icon: LayoutDashboard },
@@ -69,6 +70,7 @@ export default function CourierDashboardSidebar() {
     if (loggingOut) return;
 
     setLoggingOut(true);
+    toast.success("Logout successful");
 
     try {
       // Clear the local session first.

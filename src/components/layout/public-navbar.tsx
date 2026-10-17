@@ -5,6 +5,7 @@ import {
   ArrowRight,
   ChevronDown,
   CircleUserRound,
+  FlowerIcon,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -19,6 +20,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/hooks/auth/useAuth";
 import { getCurrentUser } from "@/lib/api/auth";
+import { toast } from "sonner";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -189,6 +191,7 @@ export default function PublicNavbar() {
     setLoggingOut(true);
     setProfileOpen(false);
     setMenuOpen(false);
+    toast.success("Logout successful");
 
     try {
       const response = await fetch("/api/auth/session", {

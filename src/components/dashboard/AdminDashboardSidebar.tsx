@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { getCurrentUser, logoutUser } from "@/lib/api/auth";
+import { toast } from "sonner";
 
 const items = [
   { label: "Overview", href: "/admin", icon: LayoutDashboard },
@@ -88,6 +89,7 @@ export default function AdminDashboardSidebar() {
     if (loggingOut) return;
 
     setLoggingOut(true);
+    toast.success("Logout successful");
 
     try {
       // Clear the local session first.
